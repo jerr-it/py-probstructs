@@ -10,6 +10,10 @@ class TestCountMinSketch(unittest.TestCase):
         cm_sketch.inc("bbb", 5)
         cm_sketch.inc("aaa", 2)
 
+        cm_sketch.save_to_file("test.txt")
+    
+        cm_sketch.load_from_file("test.txt")
+
         self.assertEqual(3, cm_sketch.get("aaa"))
         self.assertEqual(5, cm_sketch.get("bbb"))
         self.assertEqual(0, cm_sketch.get("ccc"))

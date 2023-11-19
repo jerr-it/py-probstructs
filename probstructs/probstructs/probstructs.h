@@ -5,6 +5,7 @@
 #include <iostream>
 #include <climits>
 #include <cmath>
+#include <fstream>
 #include "MurmurHash3.h"
 
 #ifndef ECM_SKETCH_ECM_SKETCH_H
@@ -68,6 +69,47 @@ namespace probstructs {
         }
 
     public:
+        void save_to_file(char* filename) {
+            std::ofstream file;
+            file.open(filename, std::ios::out);
+            if (!file.is_open()) {
+                fprintf(stderr, "Can't open output file %s!\n", filename);
+                exit(1);
+            }
+
+            file << width << std::endl << depth << std::endl;
+
+            // Iterate counter row-wise and write to file
+            for(int i = 0; i < depth; i++) {
+                for (uint32_t j = 0; j < width; j++) {
+                    file << counter[i][j] << std::endl;
+                }
+            }
+
+            file.close();
+        }
+
+        void load_from_file(char* filename) {
+            std::ifstream file;
+            file.open(filename, std::ios::in);
+            if (!file.is_open()) {
+                fprintf(stderr, "Can't open input file %s!\n", filename);
+                exit(1);
+            }
+
+            file >> width;
+            file >> depth;
+
+            for(int i = 0; i < depth; i++) {
+                counter[i] = new T[width];
+                for (uint32_t j = 0; j < width; j++) {
+                    file >> counter[i][j];
+                }
+            }
+
+            file.close();
+        }
+
         /**
          * Create CM sketch with width {width} and depth {depth}.
          */

@@ -51,6 +51,22 @@ PYBIND11_MODULE(probstructs, m) {
             )pbdoc",
             py::arg("key")
         )
+        .def(
+                "save_to_file",
+                &CountMinSketch<uint32_t>::save_to_file,
+                R"pbdoc(
+                    Save CM sketch to file.
+                )pbdoc",
+                py::arg("filename")
+       )
+       .def(
+               "load_from_file",
+                &CountMinSketch<uint32_t>::load_from_file,
+                R"pbdoc(
+                    Load CM sketch from file.
+                )pbdoc",
+                py::arg("filename")
+       )
     ;
 
     py::class_<ExponentialHistorgram<uint32_t>> eh_class(
